@@ -1,4 +1,5 @@
 #include "previewgraph.h"
+#include <videopreviewbin.h>
 
 #include <gst/gst.h>
 #include <gst/video/videooverlay.h>
@@ -32,7 +33,7 @@ bool PreviewGraph::start()
     }
 
     if (m_winId != 0) {
-        GstElement *sink = gst_bin_get_by_name(GST_BIN(m_pipeline), "wcs-window");
+        GstElement *sink = gst_bin_get_by_name(GST_BIN(m_pipeline), "videosink");
         gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(sink), m_winId);
     }
 
@@ -54,29 +55,23 @@ void PreviewGraph::setup()
     // Create elements
     GstElement *webcam = gst_element_factory_make("v4l2src", "wcs-webcam");
     if (!webcam)
-        error("ERROR: failed to create element of type 'v4l2src'\n");
+        error("PreviewGraph: ERROR: failed to create element of type 'v4l2src'\n");
 
-    GstElement *window = NULL;
-    m_winId == 0
-            ? window = gst_element_factory_make("autovideosink", "wcs-window")
-            : window = gst_element_factory_make("xvimagesink", "wcs-window");
-    if (!window) {
-        gst_object_unref(GST_OBJECT(webcam));
-        error("ERROR: failed to create element of type 'videosink'"
-                             " or 'xvimagesink'\n");
-    }
+    VideoPreviewBin bin(m_winId);
+    GstElement *videopreviewbin = bin.get();
 
-    m_pipeline = gst_pipeline_new("wcs-pipeline");
+    m_pipeline = gst_pipeline_new("pipeline");
     if (!m_pipeline) {
-        gst_object_unref(GST_OBJECT(window));
+        gst_object_unref(GST_OBJECT(videopreviewbin));
         gst_object_unref(GST_OBJECT(webcam));
-        error("ERROR: failed to create pipeline\n");
+        error("PreviewGraph: ERROR: failed to create pipeline\n");
     }
 
-    gst_bin_add_many(GST_BIN(m_pipeline), webcam, window, NULL);
-    if (!gst_element_link(webcam, window)) {
-        error("ERROR: failed to link elements of types "
-              "'v4l2src' and 'autovidesink' or 'xvimagesink'\n");
+    gst_bin_add_many(GST_BIN(m_pipeline), webcam, videopreviewbin, NULL);
+
+    if (!gst_element_link(webcam, videopreviewbin)) {
+        error("PreviewGraph: ERROR: failed to link elements of types "
+              "'v4l2src' and 'videopreviewbin'\n");
     }
 }
 

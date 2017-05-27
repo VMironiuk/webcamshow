@@ -1,5 +1,5 @@
-#ifndef YOUTUBEWITHPREVIEWGRAPH_H
-#define YOUTUBEWITHPREVIEWGRAPH_H
+#ifndef RTMPPREVIEWGRAPH_H
+#define RTMPPREVIEWGRAPH_H
 
 #include "abstractgraph.h"
 
@@ -26,4 +26,4 @@ private:
     std::string m_location;
 };
 
-#endif // YOUTUBEWITHPREVIEWGRAPH_H
+#endif // RTMPPREVIEWGRAPH_H

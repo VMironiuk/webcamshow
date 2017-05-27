@@ -6,7 +6,8 @@ CONFIG -= qt
 INCLUDEPATH += /usr/include/gstreamer-1.0 \
                /usr/include/glib-2.0 \
                /usr/lib/i386-linux-gnu/glib-2.0/include \
-               mediagraph/graph
+               mediagraph/graph \
+               mediagraph/output
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += gstreamer-1.0 \
@@ -20,7 +21,9 @@ SOURCES += main.cpp \
     mediagraph/graph/previewgraph.cpp \
     mediagraph/graph/rtmpgraph.cpp \
     mediagraph/graph/rtmppreviewgraph.cpp \
-    mediagraph/graph/videotestgraph.cpp
+    mediagraph/graph/videotestgraph.cpp \
+    mediagraph/output/abstractoutputbin.cpp \
+    mediagraph/output/videopreviewbin.cpp
 
 HEADERS += \
     streamer.h \
@@ -28,4 +31,6 @@ HEADERS += \
     mediagraph/graph/previewgraph.h \
     mediagraph/graph/rtmpgraph.h \
     mediagraph/graph/rtmppreviewgraph.h \
-    mediagraph/graph/videotestgraph.h
+    mediagraph/graph/videotestgraph.h \
+    mediagraph/output/abstractoutputbin.h \
+    mediagraph/output/videopreviewbin.h
