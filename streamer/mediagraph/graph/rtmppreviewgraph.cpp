@@ -97,6 +97,7 @@ void RtmpPreviewGraph::setup()
         free();
         return;
     }
+    g_object_set(G_OBJECT(audiosrc), "device", "hw:1", NULL);
 
     if (!gst_bin_add(GST_BIN(m_pipeline), audiosrc)) {
         g_printerr("RtmpPreviewGraph: ERROR: pipeline doesn't want to accept element of type 'alsasrc'\n");
