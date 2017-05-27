@@ -16,6 +16,25 @@ enum StreamType
     RtmpPreview = Preview | Rtmp
 };
 
+static bool waitForInput()
+{
+    char input;
+    bool stop = false;
+
+    while (!stop) {
+        std::cin >> input;
+
+        switch (input) {
+        case 'q':
+            stop = true;
+            break;
+        default:
+            break;
+        }
+    }
+    return stop;
+}
+
 Streamer::Streamer(int argc, char **argv)
     : m_graph(nullptr)
 {
@@ -85,23 +104,4 @@ int Streamer::exec()
     m_graph->stop();
 
     return 0;
-}
-
-bool Streamer::waitForInput()
-{
-    char input;
-    bool stop = false;
-
-    while (!stop) {
-        std::cin >> input;
-
-        switch (input) {
-        case 'q':
-            stop = true;
-            break;
-        default:
-            break;
-        }
-    }
-    return stop;
 }

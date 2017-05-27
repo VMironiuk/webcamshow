@@ -8,10 +8,6 @@ public:
 
     virtual bool start() = 0;
     virtual void stop() = 0;
-
-protected:
-    void error(const char *msg);
-    virtual void cleanup() = 0;
 };
 
 #endif // ABSTRACTGRAPH_H

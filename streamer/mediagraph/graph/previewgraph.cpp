@@ -28,7 +28,7 @@ PreviewGraph::~PreviewGraph()
 bool PreviewGraph::start()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to start streaming, pipeline is corrupted\n");
+        g_printerr("PreviewGraph: ERROR: failed to start streaming, pipeline is corrupted\n");
         return FALSE;
     }
 
@@ -45,7 +45,7 @@ bool PreviewGraph::start()
 void PreviewGraph::stop()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        g_printerr("PreviewGraph: ERROR: failed to stop streaming, pipeline is corrupted\n");
         return;
     }
 
@@ -105,9 +105,4 @@ void PreviewGraph::free()
         gst_object_unref(GST_OBJECT(m_pipeline));
         m_pipeline = NULL;
     }
-}
-
-void PreviewGraph::cleanup()
-{
-    free();
 }

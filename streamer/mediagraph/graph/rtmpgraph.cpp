@@ -26,7 +26,7 @@ RtmpGraph::~RtmpGraph()
 bool RtmpGraph::start()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to start streaming, pipeline is corrupted\n");
+        g_printerr("RtmpGraph: ERROR: failed to start streaming, pipeline is corrupted\n");
         return FALSE;
     }
 
@@ -38,7 +38,7 @@ bool RtmpGraph::start()
 void RtmpGraph::stop()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        g_printerr("RtmpGraph: ERROR: failed to stop streaming, pipeline is corrupted\n");
         return;
     }
 
@@ -119,9 +119,4 @@ void RtmpGraph::free()
         gst_object_unref(GST_OBJECT(m_pipeline));
         m_pipeline = NULL;
     }
-}
-
-void RtmpGraph::cleanup()
-{
-    free();
 }

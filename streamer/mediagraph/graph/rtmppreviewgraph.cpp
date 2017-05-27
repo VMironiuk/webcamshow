@@ -30,7 +30,7 @@ RtmpPreviewGraph::~RtmpPreviewGraph()
 bool RtmpPreviewGraph::start()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to start streaming, pipeline is corrupted\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to start streaming, pipeline is corrupted\n");
         return FALSE;
     }
 
@@ -47,7 +47,7 @@ bool RtmpPreviewGraph::start()
 void RtmpPreviewGraph::stop()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to stop streaming, pipeline is corrupted\n");
         return;
     }
 
@@ -152,9 +152,7 @@ void RtmpPreviewGraph::setup()
     g_assert(preview_pad);
 
     if (gst_pad_link(tee_pad_src_0, preview_pad) != GST_PAD_LINK_OK) {
-        g_printerr("RtmpPreviewGraph: ERROR: cannot lint 'tee' and 'videopreviewbin'\n");
-        gst_element_release_request_pad(tee, tee_pad_src_0);
-        gst_object_unref(GST_OBJECT(tee_pad_src_0));
+        g_printerr("RtmpPreviewGraph: ERROR: cannot link 'tee' and 'videopreviewbin'\n");
         gst_object_unref(GST_OBJECT(preview_pad));
         free();
         return;
@@ -181,14 +179,16 @@ void RtmpPreviewGraph::setup()
 
     // Link videosrc ! tee
     if (!gst_element_link(videosrc, tee)) {
-        error("RtmpPreviewGraph: ERROR: failed to link elements of types 'v4l2src' and 'tee'\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'v4l2src' and 'tee'\n");
         free();
+        return;
     }
 
     // Link audiosrc ! rtmpbin
     if (!gst_element_link_pads(audiosrc, "src", rtmpbin, "audiosink")) {
-        error("RtmpPreviewGraph: ERROR: failed to link elements of types 'alsasrc' and 'rtmpbin'\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'alsasrc' and 'rtmpbin'\n");
         free();
+        return;
     }
 }
 
@@ -209,9 +209,4 @@ void RtmpPreviewGraph::free()
         gst_object_unref(GST_OBJECT(m_pipeline));
         m_pipeline = NULL;
     }
-}
-
-void RtmpPreviewGraph::cleanup()
-{
-    free();
 }

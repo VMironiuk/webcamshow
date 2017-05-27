@@ -10,8 +10,6 @@ public:
     int exec();
 
 private:
-    bool waitForInput();
-
     AbstractGraph *m_graph;
 };
 

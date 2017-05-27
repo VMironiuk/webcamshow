@@ -17,7 +17,7 @@ VideoTestGraph::~VideoTestGraph()
 bool VideoTestGraph::start()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to start streaming, pipeline is corrupted\n");
+        g_printerr("VideoTestGraph: ERROR: failed to start streaming, pipeline is corrupted\n");
         return FALSE;
     }
 
@@ -29,7 +29,7 @@ bool VideoTestGraph::start()
 void VideoTestGraph::stop()
 {
     if (!m_pipeline) {
-        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        g_printerr("VideoTestGraph: ERROR: failed to stop streaming, pipeline is corrupted\n");
         return;
     }
 
@@ -88,9 +88,4 @@ void VideoTestGraph::free()
         gst_object_unref(GST_OBJECT(m_pipeline));
         m_pipeline = NULL;
     }
-}
-
-void VideoTestGraph::cleanup()
-{
-    free();
 }

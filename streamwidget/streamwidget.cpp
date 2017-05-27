@@ -1,7 +1,6 @@
 #include "streamwidget.h"
 
 #include <QtWidgets>
-#include <QDebug>
 
 StreamWidget::StreamWidget(QWidget *parent)
     : QWidget(parent),
@@ -10,7 +9,7 @@ StreamWidget::StreamWidget(QWidget *parent)
       m_rtmpNameLineEdit(new QLineEdit),
       m_process(new QProcess(this))
 {
-    // Set up user interface
+    // Setup user interface
 
     // Preview
     auto previewGroupBox = new QGroupBox("Preview");

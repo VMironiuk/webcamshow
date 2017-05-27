@@ -12,7 +12,7 @@ class RtmpPreviewGraph : public AbstractGraph
 {
 public:
     RtmpPreviewGraph();
-    RtmpPreviewGraph(int winid, const std::string &location = "");
+    RtmpPreviewGraph(int winid, const std::string &location);
     ~RtmpPreviewGraph();
 
     bool start();
@@ -21,7 +21,6 @@ public:
 private:
     void setup();
     void free();
-    void cleanup();
 
     GstElement *m_pipeline;
     int m_winId;

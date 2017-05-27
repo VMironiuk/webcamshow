@@ -19,7 +19,6 @@ public:
 private:
     void setup();
     void free();
-    void cleanup();
 
     GstElement *m_pipeline;
     std::string m_location;

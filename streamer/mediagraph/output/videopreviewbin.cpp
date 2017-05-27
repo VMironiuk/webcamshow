@@ -17,7 +17,7 @@ VideoPreviewBin::~VideoPreviewBin()
 GstElement *VideoPreviewBin::get()
 {
     // Create elements
-    GstElement *bin = gst_bin_new("videopreview-bin");
+    GstElement *bin = gst_bin_new("videopreviewbin");
     if (!bin) {
         g_printerr("VideoPreviewBin: ERROR: failed to create element of type 'bin'\n");
         return NULL;
@@ -81,7 +81,7 @@ GstElement *VideoPreviewBin::get()
 
     // Link elements
     if (!gst_element_link(videoqueue, videosink)) {
-        g_printerr("VideoPreview: ERROR: failed to link videoqueue and videosink\n");
+        g_printerr("VideoPreviewBin: ERROR: failed to link 'videoqueue' and 'videosink'\n");
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }

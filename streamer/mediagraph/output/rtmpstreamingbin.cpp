@@ -21,8 +21,8 @@ GstElement *RtmpStreamingBin::get()
         return NULL;
     }
 
-    // Creates elements
-    GstElement *bin = gst_bin_new("rtmpstreaming-bin");
+    // Create elements
+    GstElement *bin = gst_bin_new("rtmpstreamingbin");
     if (!bin) {
         g_printerr("RtmpStreamingBin: ERROR: failed to create element of type 'bin'\n");
         return NULL;
@@ -88,7 +88,7 @@ GstElement *RtmpStreamingBin::get()
     }
 
     if (!gst_bin_add(GST_BIN(bin), audiocodec)) {
-        g_printerr("RtmpStreamingBin: ERROR: bin doesn't want to accept element of type 'audiocodec'\n");
+        g_printerr("RtmpStreamingBin: ERROR: bin doesn't want to accept element of type 'faac'\n");
         gst_object_unref(GST_OBJECT(bin));
         gst_object_unref(GST_OBJECT(audiocodec));
         return NULL;
@@ -120,14 +120,12 @@ GstElement *RtmpStreamingBin::get()
     // Link elements
     if (!gst_element_link(audioqueue, audiocodec)) {
         g_printerr("VideoPreview: ERROR: failed to link 'audioqueue' and 'audiocodec'\n");
-        gst_object_unref(GST_OBJECT(pad));
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
 
     if (!gst_element_link_pads(audiocodec, "src", muxer, "audio")) {
         g_printerr("VideoPreview: ERROR: failed to link 'audiocodec' and 'flvmux'\n");
-        gst_object_unref(GST_OBJECT(pad));
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
@@ -155,7 +153,7 @@ GstElement *RtmpStreamingBin::get()
     }
 
     if (!gst_bin_add(GST_BIN(bin), videocodec)) {
-        g_printerr("RtmpStreamingBin: ERROR: bin doesn't want to accept element of type 'videocodec'\n");
+        g_printerr("RtmpStreamingBin: ERROR: bin doesn't want to accept element of type 'x264enc'\n");
         gst_object_unref(GST_OBJECT(bin));
         gst_object_unref(GST_OBJECT(videocodec));
         return NULL;
@@ -186,13 +184,13 @@ GstElement *RtmpStreamingBin::get()
 
     // Link elements
     if (!gst_element_link(videoqueue, videocodec)) {
-        g_printerr("VideoPreview: ERROR: failed to link 'videoqueue' and 'videocodec'\n");
+        g_printerr("VideoPreview: ERROR: failed to link 'videoqueue' and 'x264enc'\n");
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
 
     if (!gst_element_link_pads(videocodec, "src", muxer, "video")) {
-        g_printerr("VideoPreview: ERROR: failed to link 'videocodec' and 'flvmux'\n");
+        g_printerr("VideoPreview: ERROR: failed to link 'x264enc' and 'flvmux'\n");
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
