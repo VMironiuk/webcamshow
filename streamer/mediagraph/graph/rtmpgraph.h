@@ -10,7 +10,7 @@ class RtmpGraph : public AbstractGraph
 {
 public:
     RtmpGraph();
-    RtmpGraph(const std::string &rtmp_location = "");
+    RtmpGraph(const std::string &location);
     ~RtmpGraph();
 
     bool start();
@@ -22,7 +22,7 @@ private:
     void cleanup();
 
     GstElement *m_pipeline;
-    std::string m_rtmp_location;
+    std::string m_location;
 };
 
 #endif // RTMPGRAPH_H

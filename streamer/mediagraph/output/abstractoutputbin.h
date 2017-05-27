@@ -7,9 +7,6 @@ class AbstractOutputBin
 public:
     virtual ~AbstractOutputBin();
     virtual GstElement *get() = 0;
-
-protected:
-    void error(const char *msg);
 };
 
 #endif // ABSTRACTOUTPUTBIN_H

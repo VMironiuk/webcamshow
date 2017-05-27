@@ -44,8 +44,10 @@ bool PreviewGraph::start()
 
 void PreviewGraph::stop()
 {
-    if (!m_pipeline)
-        error("ERROR: failed to stop streaming, pipeline is corrupted\n");
+    if (!m_pipeline) {
+        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        return;
+    }
 
     gst_element_set_state(m_pipeline, GST_STATE_NULL);
 }
@@ -53,25 +55,47 @@ void PreviewGraph::stop()
 void PreviewGraph::setup()
 {
     // Create elements
-    GstElement *webcam = gst_element_factory_make("v4l2src", "wcs-webcam");
-    if (!webcam)
-        error("PreviewGraph: ERROR: failed to create element of type 'v4l2src'\n");
+    m_pipeline = gst_pipeline_new("pipeline");
+    if (!m_pipeline) {
+        g_printerr("PreviewGraph: ERROR: failed to create element of type 'pipeline'\n");
+        return;
+    }
+
+    GstElement *videosrc = gst_element_factory_make("v4l2src", "videosrc");
+    if (!videosrc) {
+        g_printerr("PreviewGraph: ERROR: failed to create element of type 'v4l2src'\n");
+        gst_object_unref(GST_OBJECT(m_pipeline));
+        return;
+    }
+
+    if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
+        g_printerr("PreviewGraph: ERROR: pipeline doesn't want to accept element of type 'v4l2src'\n");
+        gst_object_unref(GST_OBJECT(m_pipeline));
+        gst_object_unref(GST_OBJECT(videosrc));
+        return;
+    }
 
     VideoPreviewBin bin(m_winId);
     GstElement *videopreviewbin = bin.get();
-
-    m_pipeline = gst_pipeline_new("pipeline");
-    if (!m_pipeline) {
-        gst_object_unref(GST_OBJECT(videopreviewbin));
-        gst_object_unref(GST_OBJECT(webcam));
-        error("PreviewGraph: ERROR: failed to create pipeline\n");
+    if (!videopreviewbin) {
+        g_printerr("PreviewGraph: ERROR: failed to create element of type 'videopreviewbin'\n");
+        gst_object_unref(GST_OBJECT(m_pipeline));
+        return;
     }
 
-    gst_bin_add_many(GST_BIN(m_pipeline), webcam, videopreviewbin, NULL);
+    if (!gst_bin_add(GST_BIN(m_pipeline), videopreviewbin)) {
+        g_printerr("PreviewGraph: ERROR: pipeline doesn't want to accept element of type 'videopreviewbin'\n");
+        gst_object_unref(GST_OBJECT(m_pipeline));
+        gst_object_unref(GST_OBJECT(videopreviewbin));
+        return;
+    }
 
-    if (!gst_element_link(webcam, videopreviewbin)) {
-        error("PreviewGraph: ERROR: failed to link elements of types "
-              "'v4l2src' and 'videopreviewbin'\n");
+    // Link elements
+    if (!gst_element_link(videosrc, videopreviewbin)) {
+        g_printerr("PreviewGraph: ERROR: failed to link elements of types "
+                   "'v4l2src' and 'videopreviewbin'\n");
+        gst_object_unref(GST_OBJECT(m_pipeline));
+        return;
     }
 }
 
