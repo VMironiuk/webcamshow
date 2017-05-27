@@ -64,14 +64,14 @@ void PreviewGraph::setup()
     GstElement *videosrc = gst_element_factory_make("v4l2src", "videosrc");
     if (!videosrc) {
         g_printerr("PreviewGraph: ERROR: failed to create element of type 'v4l2src'\n");
-        gst_object_unref(GST_OBJECT(m_pipeline));
+        free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
         g_printerr("PreviewGraph: ERROR: pipeline doesn't want to accept element of type 'v4l2src'\n");
-        gst_object_unref(GST_OBJECT(m_pipeline));
         gst_object_unref(GST_OBJECT(videosrc));
+        free();
         return;
     }
 
@@ -79,14 +79,14 @@ void PreviewGraph::setup()
     GstElement *videopreviewbin = bin.get();
     if (!videopreviewbin) {
         g_printerr("PreviewGraph: ERROR: failed to create element of type 'videopreviewbin'\n");
-        gst_object_unref(GST_OBJECT(m_pipeline));
+        free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), videopreviewbin)) {
         g_printerr("PreviewGraph: ERROR: pipeline doesn't want to accept element of type 'videopreviewbin'\n");
-        gst_object_unref(GST_OBJECT(m_pipeline));
         gst_object_unref(GST_OBJECT(videopreviewbin));
+        free();
         return;
     }
 
@@ -94,15 +94,17 @@ void PreviewGraph::setup()
     if (!gst_element_link(videosrc, videopreviewbin)) {
         g_printerr("PreviewGraph: ERROR: failed to link elements of types "
                    "'v4l2src' and 'videopreviewbin'\n");
-        gst_object_unref(GST_OBJECT(m_pipeline));
+        free();
         return;
     }
 }
 
 void PreviewGraph::free()
 {
-    if (m_pipeline)
+    if (m_pipeline) {
         gst_object_unref(GST_OBJECT(m_pipeline));
+        m_pipeline = NULL;
+    }
 }
 
 void PreviewGraph::cleanup()

@@ -16,6 +16,11 @@ RtmpStreamingBin::~RtmpStreamingBin()
 
 GstElement *RtmpStreamingBin::get()
 {
+    if (m_location.empty()) {
+        g_printerr("RtmpStreamingBin: ERROR: RTMP location is empty\n");
+        return NULL;
+    }
+
     // Creates elements
     GstElement *bin = gst_bin_new("rtmpstreaming-bin");
     if (!bin) {

@@ -28,8 +28,10 @@ bool VideoTestGraph::start()
 
 void VideoTestGraph::stop()
 {
-    if (!m_pipeline)
-        error("ERROR: failed to stop streaming, pipeline is corrupted\n");
+    if (!m_pipeline) {
+        g_printerr("ERROR: failed to stop streaming, pipeline is corrupted\n");
+        return;
+    }
 
     gst_element_set_state(m_pipeline, GST_STATE_NULL);
 }
@@ -37,34 +39,55 @@ void VideoTestGraph::stop()
 void VideoTestGraph::setup()
 {
     // Create elements
-    GstElement *video_test = gst_element_factory_make("videotestsrc", "wcs-videotest");
-    if (!video_test)
-        error("ERROR: failed to create element of type 'videosrc'\n");
-
-    GstElement *video_sink = gst_element_factory_make("autovideosink", "wcs-videosink");
-    if (!video_sink) {
-        gst_object_unref(GST_OBJECT(video_test));
-        error("ERROR: failed to create element of type 'videosrc'\n");
-    }
-
-    m_pipeline = gst_pipeline_new("wcs-pipeline");
+    m_pipeline = gst_pipeline_new("pipeline");
     if (!m_pipeline) {
-        gst_object_unref(GST_OBJECT(video_sink));
-        gst_object_unref(GST_OBJECT(video_test));
-        error("ERROR: failed to create pipeline\n");
+        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'pipeline'\n");
+        return;
     }
 
-    gst_bin_add_many(GST_BIN(m_pipeline), video_test, video_sink, NULL);
-    if (!gst_element_link(video_test, video_sink)) {
-        error("ERROR: failed to link elements of types "
-              "'videotestsrc' and 'autovidesink'\n");
+    GstElement *videosrc = gst_element_factory_make("videotestsrc", "videosrc");
+    if (!videosrc) {
+        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'videotestsrc'\n");
+        free();
+        return;
+    }
+
+    if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
+        g_printerr("VideoTesGraph: ERROR: pipeline doesn't want to accept element of type 'videotestsrc'\n");
+        gst_object_unref(GST_OBJECT(videosrc));
+        free();
+        return;
+    }
+
+    GstElement *videosink = gst_element_factory_make("autovideosink", "videosink");
+    if (!videosink) {
+        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'autovideosink'\n");
+        free();
+        return;
+    }
+
+    if (!gst_bin_add(GST_BIN(m_pipeline), videosink)) {
+        g_printerr("VideoTesGraph: ERROR: pipeline doesn't want to accept element of type 'autovidesionk'\n");
+        gst_object_unref(GST_OBJECT(videosink));
+        free();
+        return;
+    }
+
+    // Link elelemnts
+    if (!gst_element_link(videosrc, videosink)) {
+        g_printerr("VideoTesGraph: ERROR: failed to link elements of types "
+                   "'videotestsrc' and 'autovideosink'\n");
+        free();
+        return;
     }
 }
 
 void VideoTestGraph::free()
 {
-    if (m_pipeline)
+    if (m_pipeline) {
         gst_object_unref(GST_OBJECT(m_pipeline));
+        m_pipeline = NULL;
+    }
 }
 
 void VideoTestGraph::cleanup()

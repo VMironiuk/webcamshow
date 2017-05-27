@@ -10,7 +10,7 @@
 
 enum StreamType
 {
-    Unknown = 0,
+    Default = 0,
     Preview = 1 << 0,
     Rtmp = 1 << 1,
     RtmpPreview = Preview | Rtmp
@@ -23,7 +23,7 @@ Streamer::Streamer(int argc, char **argv)
     int winid = 0;
     std::string rtmp_location;
 
-    unsigned stream_type = Unknown;
+    unsigned stream_type = Default;
 
     while ((c = getopt(argc, argv, "r:p:")) != EOF) {
         switch (c) {
@@ -55,7 +55,7 @@ Streamer::Streamer(int argc, char **argv)
         m_graph = new RtmpPreviewGraph(winid, rtmp_location);
         break;
 
-    case Unknown: // fall down
+    case Default: // fall down
     default:
         m_graph = new VideoTestGraph();
         break;

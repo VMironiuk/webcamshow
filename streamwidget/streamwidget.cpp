@@ -61,7 +61,7 @@ void StreamWidget::onStartButtonClicked()
     arguments << "-p";
     arguments << QString::number(m_previewLabel->winId());
     arguments << "-r";
-    arguments << rtmpLocation;
+    arguments << (rtmpLocation == "/" ? QString() : rtmpLocation);
 
     m_process->start(program, arguments);
 }
