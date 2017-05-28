@@ -205,6 +205,7 @@ void RtmpPreviewGraph::free()
                     gst_object_unref(GST_OBJECT(pad));
                 }
             }
+            gst_object_unref(GST_OBJECT(tee));
         }
 
         gst_object_unref(GST_OBJECT(m_pipeline));
