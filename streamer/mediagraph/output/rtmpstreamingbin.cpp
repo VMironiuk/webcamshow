@@ -72,14 +72,6 @@ GstElement *RtmpStreamingBin::get()
         return NULL;
     }
 
-//    GstElement *audioconvert = gst_element_factory_make("audioconvert", "audioconvert");
-//    if (!audioconvert) {
-//        g_printerr("RtmpStreamingBin: ERROR: failed to create element of type 'audioconvert'\n");
-//        gst_object_unref(GST_OBJECT(bin));
-//        return NULL;
-//    }
-//    gst_bin_add(GST_BIN(bin), audioconvert);
-
     GstElement *audiocodec = gst_element_factory_make("faac", "audiocodec");
     if (!audiocodec) {
         g_printerr("RtmpStreamingBin: ERROR: failed to create element of type 'faac'\n");
@@ -151,6 +143,7 @@ GstElement *RtmpStreamingBin::get()
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
+    g_object_set(G_OBJECT(videocodec), "tune", 4, "pass", 17, NULL);
 
     if (!gst_bin_add(GST_BIN(bin), videocodec)) {
         g_printerr("RtmpStreamingBin: ERROR: bin doesn't want to accept element of type 'x264enc'\n");
