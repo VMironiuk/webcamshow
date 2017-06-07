@@ -6,6 +6,8 @@
 
 class QLabel;
 class QLineEdit;
+class QComboBox;
+class QPushButton;
 class StreamWidget : public QWidget
 {
     Q_OBJECT
@@ -24,10 +26,16 @@ private slots:
 private:
     void startStreaming() const;
     void stopStreaming() const;
+    QStringList makeArguments() const;
+    void setPauseStateUi();
+    void setStreamingStateUi();
 
     QLabel *m_previewLabel;
     QLineEdit *m_serverUrlLineEdit;
     QLineEdit *m_rtmpNameLineEdit;
+    QComboBox *m_comboBox;
+    QPushButton *m_startButton;
+    QPushButton *m_stopButton;
     QProcess *m_process;
 };
 
