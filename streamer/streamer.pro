@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     mediagraph/output/abstractoutputbin.cpp \
     mediagraph/output/videopreviewbin.cpp \
     mediagraph/output/rtmpstreamingbin.cpp \
-    mediagraph/graph/rtmpvideotestgraph.cpp
+    mediagraph/graph/rtmpvideotestgraph.cpp \
+    mediagraph/graph/rtmppreviewvideotestgraph.cpp
 
 HEADERS += \
     streamer.h \
@@ -37,4 +38,5 @@ HEADERS += \
     mediagraph/output/abstractoutputbin.h \
     mediagraph/output/videopreviewbin.h \
     mediagraph/output/rtmpstreamingbin.h \
-    mediagraph/graph/rtmpvideotestgraph.h
+    mediagraph/graph/rtmpvideotestgraph.h \
+    mediagraph/graph/rtmppreviewvideotestgraph.h

@@ -152,7 +152,7 @@ QStringList StreamWidget::makeArguments() const
         arguments << (rtmpLocation == "/" ? QString() : rtmpLocation);
     }
 
-    if (type == MT_RtmpStreamAndVideoTest)
+    if (type == MT_RtmpStreamAndVideoTest || type == MT_VideoTest)
         arguments << "-t";
 
     return arguments;

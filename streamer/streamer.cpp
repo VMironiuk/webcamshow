@@ -4,6 +4,7 @@
 #include "rtmppreviewgraph.h"
 #include "videotestgraph.h"
 #include "rtmpvideotestgraph.h"
+#include "rtmppreviewvideotestgraph.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -91,7 +92,7 @@ Streamer::Streamer(int argc, char **argv)
         break;
 
     case RtmpPreviewVideoTest:
-        // TODO
+        m_graph = new RtmpPreviewVideoTestGraph(winid, rtmp_location);
         break;
 
     case Default: // fall down
