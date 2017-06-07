@@ -19,8 +19,10 @@ private slots:
     void onStartButtonClicked();
     void onStopButtonClicked();
     void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onMediaTypeChanged(int type);
 
 private:
+    void startStreaming() const;
     void stopStreaming() const;
 
     QLabel *m_previewLabel;
