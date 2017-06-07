@@ -3,6 +3,7 @@
 #include "rtmpgraph.h"
 #include "rtmppreviewgraph.h"
 #include "videotestgraph.h"
+#include "rtmpvideotestgraph.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -13,7 +14,10 @@ enum StreamType
     Default = 0,
     Preview = 1 << 0,
     Rtmp = 1 << 1,
-    RtmpPreview = Preview | Rtmp
+    RtmpPreview = Preview | Rtmp,
+    VideoTest =  1 << 2,
+    RtmpVideoTest = VideoTest | Rtmp,
+    RtmpPreviewVideoTest = VideoTest | Preview | Rtmp
 };
 
 static bool waitForInput()
@@ -44,7 +48,7 @@ Streamer::Streamer(int argc, char **argv)
 
     unsigned stream_type = Default;
 
-    while ((c = getopt(argc, argv, "r:p:")) != EOF) {
+    while ((c = getopt(argc, argv, "r:p:t")) != EOF) {
         switch (c) {
         case 'p':
             winid = std::atoi(optarg);
@@ -54,6 +58,10 @@ Streamer::Streamer(int argc, char **argv)
         case 'r':
             rtmp_location = optarg;
             stream_type |= Rtmp;
+            break;
+
+        case 't':
+            stream_type |= VideoTest;
             break;
 
         default:
@@ -72,6 +80,18 @@ Streamer::Streamer(int argc, char **argv)
 
     case RtmpPreview:
         m_graph = new RtmpPreviewGraph(winid, rtmp_location);
+        break;
+
+    case VideoTest:
+        m_graph = new VideoTestGraph();
+        break;
+
+    case RtmpVideoTest:
+        m_graph = new RtmpVideoTestGraph(rtmp_location);
+        break;
+
+    case RtmpPreviewVideoTest:
+        // TODO
         break;
 
     case Default: // fall down

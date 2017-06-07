@@ -146,10 +146,14 @@ QStringList StreamWidget::makeArguments() const
     arguments << QString::number(m_previewLabel->winId());
 
     int type = m_comboBox->currentIndex();
+
     if (type == MT_RtmpStream || type == MT_RtmpStreamAndVideoTest) {
         arguments << "-r";
         arguments << (rtmpLocation == "/" ? QString() : rtmpLocation);
     }
+
+    if (type == MT_RtmpStreamAndVideoTest)
+        arguments << "-t";
 
     return arguments;
 }
