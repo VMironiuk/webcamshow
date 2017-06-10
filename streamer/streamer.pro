@@ -6,8 +6,9 @@ CONFIG -= qt
 INCLUDEPATH += /usr/include/gstreamer-1.0 \
                /usr/include/glib-2.0 \
                /usr/lib/i386-linux-gnu/glib-2.0/include \
-               mediagraph/graph \
-               mediagraph/output
+               mediagraph/graphs \
+               mediagraph/bins \
+               mediagraph/bins/output
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += gstreamer-1.0 \
@@ -17,26 +18,28 @@ unix: PKGCONFIG += gstreamer-1.0 \
 
 SOURCES += main.cpp \
     streamer.cpp \
-    mediagraph/graph/abstractgraph.cpp \
-    mediagraph/graph/previewgraph.cpp \
-    mediagraph/graph/rtmpgraph.cpp \
-    mediagraph/graph/rtmppreviewgraph.cpp \
-    mediagraph/graph/videotestgraph.cpp \
-    mediagraph/output/abstractoutputbin.cpp \
-    mediagraph/output/videopreviewbin.cpp \
-    mediagraph/output/rtmpstreamingbin.cpp \
-    mediagraph/graph/rtmpvideotestgraph.cpp \
-    mediagraph/graph/rtmppreviewvideotestgraph.cpp
+    mediagraph/bins/abstractbin.cpp \
+    mediagraph/bins/output/abstractoutputbin.cpp \
+    mediagraph/bins/output/rtmpstreamingbin.cpp \
+    mediagraph/bins/output/videopreviewbin.cpp \
+    mediagraph/graphs/abstractgraph.cpp \
+    mediagraph/graphs/previewgraph.cpp \
+    mediagraph/graphs/rtmpgraph.cpp \
+    mediagraph/graphs/rtmppreviewgraph.cpp \
+    mediagraph/graphs/rtmppreviewvideotestgraph.cpp \
+    mediagraph/graphs/rtmpvideotestgraph.cpp \
+    mediagraph/graphs/videotestgraph.cpp
 
 HEADERS += \
     streamer.h \
-    mediagraph/graph/abstractgraph.h \
-    mediagraph/graph/previewgraph.h \
-    mediagraph/graph/rtmpgraph.h \
-    mediagraph/graph/rtmppreviewgraph.h \
-    mediagraph/graph/videotestgraph.h \
-    mediagraph/output/abstractoutputbin.h \
-    mediagraph/output/videopreviewbin.h \
-    mediagraph/output/rtmpstreamingbin.h \
-    mediagraph/graph/rtmpvideotestgraph.h \
-    mediagraph/graph/rtmppreviewvideotestgraph.h
+    mediagraph/bins/abstractbin.h \
+    mediagraph/bins/output/abstractoutputbin.h \
+    mediagraph/bins/output/rtmpstreamingbin.h \
+    mediagraph/bins/output/videopreviewbin.h \
+    mediagraph/graphs/abstractgraph.h \
+    mediagraph/graphs/previewgraph.h \
+    mediagraph/graphs/rtmpgraph.h \
+    mediagraph/graphs/rtmppreviewgraph.h \
+    mediagraph/graphs/rtmppreviewvideotestgraph.h \
+    mediagraph/graphs/rtmpvideotestgraph.h \
+    mediagraph/graphs/videotestgraph.h
