@@ -1,4 +1,5 @@
 #include "rtmppreviewgraph.h"
+#include "videoinputbin.h"
 #include "rtmpstreamingbin.h"
 #include "videopreviewbin.h"
 
@@ -63,15 +64,16 @@ void RtmpPreviewGraph::setup()
         return;
     }
 
-    GstElement *videosrc = gst_element_factory_make("v4l2src", "videosrc");
+    VideoInputBin videoinputbin;
+    GstElement *videosrc = videoinputbin.get();
     if (!videosrc) {
-        g_printerr("RtmpPreviewGraph: ERROR: failed to create element of type 'v4l2src'\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to create element of type 'videoinputbin'\n");
         free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
-        g_printerr("RtmpPreviewGraph: ERROR: pipeline doesn't want to accept element of type 'v4l2src'\n");
+        g_printerr("RtmpPreviewGraph: ERROR: pipeline doesn't want to accept element of type 'videoinputbin'\n");
         gst_object_unref(GST_OBJECT(videosrc));
         free();
         return;
@@ -180,7 +182,7 @@ void RtmpPreviewGraph::setup()
 
     // Link videosrc ! tee
     if (!gst_element_link(videosrc, tee)) {
-        g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'v4l2src' and 'tee'\n");
+        g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'videoinputbin' and 'tee'\n");
         free();
         return;
     }

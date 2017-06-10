@@ -8,7 +8,8 @@ INCLUDEPATH += /usr/include/gstreamer-1.0 \
                /usr/lib/i386-linux-gnu/glib-2.0/include \
                mediagraph/graphs \
                mediagraph/bins \
-               mediagraph/bins/output
+               mediagraph/bins/output \
+               mediagraph/bins/input
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += gstreamer-1.0 \
@@ -27,7 +28,8 @@ SOURCES += main.cpp \
     mediagraph/graphs/rtmppreviewgraph.cpp \
     mediagraph/graphs/rtmppreviewvideotestgraph.cpp \
     mediagraph/graphs/rtmpvideotestgraph.cpp \
-    mediagraph/graphs/videotestgraph.cpp
+    mediagraph/graphs/videotestgraph.cpp \
+    mediagraph/bins/input/videoinputbin.cpp
 
 HEADERS += \
     streamer.h \
@@ -40,4 +42,5 @@ HEADERS += \
     mediagraph/graphs/rtmppreviewgraph.h \
     mediagraph/graphs/rtmppreviewvideotestgraph.h \
     mediagraph/graphs/rtmpvideotestgraph.h \
-    mediagraph/graphs/videotestgraph.h
+    mediagraph/graphs/videotestgraph.h \
+    mediagraph/bins/input/videoinputbin.h
