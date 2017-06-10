@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     mediagraph/graphs/rtmpvideotestgraph.cpp \
     mediagraph/graphs/videotestgraph.cpp \
     mediagraph/bins/input/videoinputbin.cpp \
-    mediagraph/bins/input/audioinputbin.cpp
+    mediagraph/bins/input/audioinputbin.cpp \
+    mediagraph/bins/input/videotestbin.cpp
 
 HEADERS += \
     streamer.h \
@@ -45,4 +46,5 @@ HEADERS += \
     mediagraph/graphs/rtmpvideotestgraph.h \
     mediagraph/graphs/videotestgraph.h \
     mediagraph/bins/input/videoinputbin.h \
-    mediagraph/bins/input/audioinputbin.h
+    mediagraph/bins/input/audioinputbin.h \
+    mediagraph/bins/input/videotestbin.h

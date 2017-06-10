@@ -1,4 +1,5 @@
 #include "videotestgraph.h"
+#include "videotestbin.h"
 
 #include <gst/gst.h>
 
@@ -45,15 +46,16 @@ void VideoTestGraph::setup()
         return;
     }
 
-    GstElement *videosrc = gst_element_factory_make("videotestsrc", "videosrc");
+    VideoTestBin videotestbin;
+    GstElement *videosrc = videotestbin.get();
     if (!videosrc) {
-        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'videotestsrc'\n");
+        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'videotestbin'\n");
         free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
-        g_printerr("VideoTesGraph: ERROR: pipeline doesn't want to accept element of type 'videotestsrc'\n");
+        g_printerr("VideoTesGraph: ERROR: pipeline doesn't want to accept element of type 'videotestbin'\n");
         gst_object_unref(GST_OBJECT(videosrc));
         free();
         return;
@@ -76,7 +78,7 @@ void VideoTestGraph::setup()
     // Link elelemnts
     if (!gst_element_link(videosrc, videosink)) {
         g_printerr("VideoTesGraph: ERROR: failed to link elements of types "
-                   "'videotestsrc' and 'autovideosink'\n");
+                   "'videotestbin' and 'autovideosink'\n");
         free();
         return;
     }

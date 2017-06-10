@@ -1,4 +1,5 @@
 #include "rtmpvideotestgraph.h"
+#include "videotestbin.h"
 #include "rtmpstreamingbin.h"
 
 #include <gst/gst.h>
@@ -54,15 +55,16 @@ void RtmpVideoTestGraph::setup()
         return;
     }
 
-    GstElement *videosrc = gst_element_factory_make("videotestsrc", "videosrc");
+    VideoTestBin videotestbin;
+    GstElement *videosrc = videotestbin.get();
     if (!videosrc) {
-        g_printerr("RtmpVideoTestGraph: ERROR: failed to create element of type 'videotestsrc'\n");
+        g_printerr("RtmpVideoTestGraph: ERROR: failed to create element of type 'videotestbin'\n");
         free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), videosrc)) {
-        g_printerr("RtmpVideoTestGraph: ERROR: bin doesn't want to accept element of type 'videotestsrc'\n");
+        g_printerr("RtmpVideoTestGraph: ERROR: bin doesn't want to accept element of type 'videotestbin'\n");
         gst_object_unref(GST_OBJECT(videosrc));
         free();
         return;
@@ -82,8 +84,8 @@ void RtmpVideoTestGraph::setup()
         return;
     }
 
-    RtmpStreamingBin bin(m_location);
-    GstElement *rtmpbin = bin.get();
+    RtmpStreamingBin rtmpstreamingbin(m_location);
+    GstElement *rtmpbin = rtmpstreamingbin.get();
     if (!rtmpbin) {
         g_printerr("RtmpVideoTestGraph: ERROR: failed to create element of type 'rtmpbin'\n");
         free();
@@ -98,7 +100,7 @@ void RtmpVideoTestGraph::setup()
     }
 
     // Link elements
-    if (!gst_element_link_pads(videosrc, "src", rtmpbin, "videosink")) {
+    if (!gst_element_link_pads(videosrc, "videotestbinsrc", rtmpbin, "videosink")) {
         g_printerr("RtmpVideoTestGraph: ERROR: cannot link elements of types 'videotestsrc' and 'rtmpbin'\n");
         free();
         return;
