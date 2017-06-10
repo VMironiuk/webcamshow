@@ -19,7 +19,6 @@ unix: PKGCONFIG += gstreamer-1.0 \
 SOURCES += main.cpp \
     streamer.cpp \
     mediagraph/bins/abstractbin.cpp \
-    mediagraph/bins/output/abstractoutputbin.cpp \
     mediagraph/bins/output/rtmpstreamingbin.cpp \
     mediagraph/bins/output/videopreviewbin.cpp \
     mediagraph/graphs/abstractgraph.cpp \
@@ -33,7 +32,6 @@ SOURCES += main.cpp \
 HEADERS += \
     streamer.h \
     mediagraph/bins/abstractbin.h \
-    mediagraph/bins/output/abstractoutputbin.h \
     mediagraph/bins/output/rtmpstreamingbin.h \
     mediagraph/bins/output/videopreviewbin.h \
     mediagraph/graphs/abstractgraph.h \

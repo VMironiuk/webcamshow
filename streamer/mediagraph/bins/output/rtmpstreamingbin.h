@@ -1,11 +1,11 @@
 #ifndef RTMPSTREAMINGBIN_H
 #define RTMPSTREAMINGBIN_H
 
-#include "abstractoutputbin.h"
+#include "abstractbin.h"
 
 #include <string>
 
-class RtmpStreamingBin : public AbstractOutputBin
+class RtmpStreamingBin : public AbstractBin
 {
 public:
     RtmpStreamingBin(const std::string &location);

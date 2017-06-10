@@ -1,9 +1,9 @@
 #ifndef VIDEOPREVIEWBIN_H
 #define VIDEOPREVIEWBIN_H
 
-#include "abstractoutputbin.h"
+#include "abstractbin.h"
 
-class VideoPreviewBin : public AbstractOutputBin
+class VideoPreviewBin : public AbstractBin
 {
 public:
     VideoPreviewBin(int winid);

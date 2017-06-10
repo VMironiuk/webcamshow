@@ -3,7 +3,7 @@
 #include <gst/gst.h>
 
 RtmpStreamingBin::RtmpStreamingBin(const std::string &location)
-    : AbstractOutputBin(),
+    : AbstractBin(),
       m_location(location)
 {
 

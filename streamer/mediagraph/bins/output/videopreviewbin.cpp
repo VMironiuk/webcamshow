@@ -3,7 +3,7 @@
 #include <gst/gst.h>
 
 VideoPreviewBin::VideoPreviewBin(int winid)
-    : AbstractOutputBin(),
+    : AbstractBin(),
       m_winid(winid)
 {
 
