@@ -1,5 +1,6 @@
 #include "rtmpvideotestgraph.h"
 #include "videotestbin.h"
+#include "audiotestbin.h"
 #include "rtmpstreamingbin.h"
 
 #include <gst/gst.h>
@@ -70,15 +71,16 @@ void RtmpVideoTestGraph::setup()
         return;
     }
 
-    GstElement *audiosrc = gst_element_factory_make("audiotestsrc", "audiosrc");
+    AudioTestBin audiotestbin;
+    GstElement *audiosrc = audiotestbin.get();
     if (!audiosrc) {
-        g_printerr("RtmpVideoTestGraph: ERROR: failed to create element of type 'audiotestsrc'\n");
+        g_printerr("RtmpVideoTestGraph: ERROR: failed to create element of type 'audiotestbin'\n");
         free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), audiosrc)) {
-        g_printerr("RtmpVideoTestGraph: ERROR: bin doesn't want to accept element of type 'audiotestsrc'\n");
+        g_printerr("RtmpVideoTestGraph: ERROR: bin doesn't want to accept element of type 'audiotestbin'\n");
         gst_object_unref(GST_OBJECT(audiosrc));
         free();
         return;
@@ -101,13 +103,13 @@ void RtmpVideoTestGraph::setup()
 
     // Link elements
     if (!gst_element_link_pads(videosrc, "videotestbinsrc", rtmpbin, "videosink")) {
-        g_printerr("RtmpVideoTestGraph: ERROR: cannot link elements of types 'videotestsrc' and 'rtmpbin'\n");
+        g_printerr("RtmpVideoTestGraph: ERROR: cannot link elements of types 'videotestbin' and 'rtmpbin'\n");
         free();
         return;
     }
 
-    if (!gst_element_link_pads(audiosrc, "src", rtmpbin, "audiosink")) {
-        g_printerr("RtmpGraph: ERROR: cannot link elements of types 'audiotestsrc' and 'rtmpbin'\n");
+    if (!gst_element_link_pads(audiosrc, "audiotestbinsrc", rtmpbin, "audiosink")) {
+        g_printerr("RtmpGraph: ERROR: cannot link elements of types 'audiotestbin' and 'rtmpbin'\n");
         free();
         return;
     }

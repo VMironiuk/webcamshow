@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     mediagraph/graphs/videotestgraph.cpp \
     mediagraph/bins/input/videoinputbin.cpp \
     mediagraph/bins/input/audioinputbin.cpp \
-    mediagraph/bins/input/videotestbin.cpp
+    mediagraph/bins/input/videotestbin.cpp \
+    mediagraph/bins/input/audiotestbin.cpp
 
 HEADERS += \
     streamer.h \
@@ -47,4 +48,5 @@ HEADERS += \
     mediagraph/graphs/videotestgraph.h \
     mediagraph/bins/input/videoinputbin.h \
     mediagraph/bins/input/audioinputbin.h \
-    mediagraph/bins/input/videotestbin.h
+    mediagraph/bins/input/videotestbin.h \
+    mediagraph/bins/input/audiotestbin.h
