@@ -1,5 +1,6 @@
 #include "rtmpgraph.h"
 #include "videoinputbin.h"
+#include "audioinputbin.h"
 #include "rtmpstreamingbin.h"
 
 #include <gst/gst.h>
@@ -70,15 +71,16 @@ void RtmpGraph::setup()
         return;
     }
 
-    GstElement *audiosrc = gst_element_factory_make("alsasrc", "audiosrc");
+    AudioInputBin audioinputbin;
+    GstElement *audiosrc = audioinputbin.get();
     if (!audiosrc) {
-        g_printerr("RtmpGraph: ERROR: failed to create element of type 'alsasrc'\n");
+        g_printerr("RtmpGraph: ERROR: failed to create element of type 'audioinputbin'\n");
         free();
         return;
     }
 
     if (!gst_bin_add(GST_BIN(m_pipeline), audiosrc)) {
-        g_printerr("RtmpGraph: ERROR: bin doesn't want to accept element of type 'alsasrc'\n");
+        g_printerr("RtmpGraph: ERROR: bin doesn't want to accept element of type 'audioinputbin'\n");
         gst_object_unref(GST_OBJECT(audiosrc));
         free();
         return;
@@ -107,7 +109,7 @@ void RtmpGraph::setup()
     }
 
     if (!gst_element_link_pads(audiosrc, "src", rtmpbin, "audiosink")) {
-        g_printerr("RtmpGraph: ERROR: cannot link elements of types 'alsasrc' and 'rtmpbin'\n");
+        g_printerr("RtmpGraph: ERROR: cannot link elements of types 'audioinputbin' and 'rtmpbin'\n");
         free();
         return;
     }
