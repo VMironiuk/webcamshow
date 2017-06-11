@@ -102,7 +102,7 @@ void RtmpGraph::setup()
     }
 
     // Link elements
-    if (!gst_element_link_pads(videosrc, "src", rtmpbin, "videosink")) {
+    if (!gst_element_link_pads(videosrc, "videoinputbinsrc", rtmpbin, "videosink")) {
         g_printerr("RtmpGraph: ERROR: cannot link elements of types 'videoinputbin' and 'rtmpbin'\n");
         free();
         return;
