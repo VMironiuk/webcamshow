@@ -84,7 +84,7 @@ Streamer::Streamer(int argc, char **argv)
         break;
 
     case VideoTest:
-        m_graph = new VideoTestGraph();
+        m_graph = new VideoTestGraph(winid);
         break;
 
     case RtmpVideoTest:
@@ -97,7 +97,7 @@ Streamer::Streamer(int argc, char **argv)
 
     case Default: // fall down
     default:
-        m_graph = new VideoTestGraph();
+        m_graph = new VideoTestGraph(winid);
         break;
     }
 }

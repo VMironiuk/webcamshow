@@ -8,6 +8,7 @@ class VideoTestGraph : public AbstractGraph
 {
 public:
     VideoTestGraph();
+    VideoTestGraph(int winId);
     ~VideoTestGraph();
 
     bool start();
@@ -18,6 +19,7 @@ private:
     void free();
 
     GstElement *m_pipeline;
+    int m_winId;
 };
 
 #endif // VIDEOTESTGRAPH_H

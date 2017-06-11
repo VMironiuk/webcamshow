@@ -1,11 +1,22 @@
 #include "videotestgraph.h"
 #include "videotestbin.h"
+#include "videopreviewbin.h"
 
 #include <gst/gst.h>
+#include <gst/video/videooverlay.h>
 
 VideoTestGraph::VideoTestGraph()
     : AbstractGraph(),
-      m_pipeline(NULL)
+      m_pipeline(NULL),
+      m_winId(0)
+{
+    setup();
+}
+
+VideoTestGraph::VideoTestGraph(int winId)
+    : AbstractGraph(),
+      m_pipeline(NULL),
+      m_winId(winId)
 {
     setup();
 }
@@ -20,6 +31,11 @@ bool VideoTestGraph::start()
     if (!m_pipeline) {
         g_printerr("VideoTestGraph: ERROR: failed to start streaming, pipeline is corrupted\n");
         return FALSE;
+    }
+
+    if (m_winId != 0) {
+        GstElement *sink = gst_bin_get_by_name(GST_BIN(m_pipeline), "videosink");
+        gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(sink), m_winId);
     }
 
     gst_element_set_state(m_pipeline, GST_STATE_PLAYING);
@@ -61,9 +77,13 @@ void VideoTestGraph::setup()
         return;
     }
 
-    GstElement *videosink = gst_element_factory_make("autovideosink", "videosink");
+    // TODO: video test streaming is hangs while linked to VideoPreviewBin
+    GstElement *videosink = NULL;
+    m_winId == 0
+            ? videosink = gst_element_factory_make("autovideosink", "videosink")
+            : videosink = gst_element_factory_make("xvimagesink", "videosink");
     if (!videosink) {
-        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'autovideosink'\n");
+        g_printerr("VideoTesGraph: ERROR: failed to create element of type 'videosink'\n");
         free();
         return;
     }
@@ -78,7 +98,7 @@ void VideoTestGraph::setup()
     // Link elelemnts
     if (!gst_element_link(videosrc, videosink)) {
         g_printerr("VideoTesGraph: ERROR: failed to link elements of types "
-                   "'videotestbin' and 'autovideosink'\n");
+                   "'videotestbin' and 'videosink'\n");
         free();
         return;
     }
