@@ -36,7 +36,7 @@ GstElement *AudioInputBin::get()
     g_object_set(G_OBJECT(audiosrc), "device", "hw:1", NULL);
 
     if (!gst_bin_add(GST_BIN(bin), audiosrc)) {
-        g_printerr("AudioInputBin: ERROR: bin doesn't want to accept element of type 'alsasrc'\n");
+        g_printerr("AudioInputBin: ERROR: bin doesn't want to accept element of type '%s'\n", SRC_NAME);
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }

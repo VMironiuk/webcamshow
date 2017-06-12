@@ -102,13 +102,13 @@ void RtmpVideoTestGraph::setup()
     }
 
     // Link elements
-    if (!gst_element_link_pads(videosrc, "videotestbinsrc", rtmpbin, "videosink")) {
+    if (!gst_element_link_pads(videosrc, VideoTestBin::GHOST_PAD_NAME, rtmpbin, "videosink")) {
         g_printerr("RtmpVideoTestGraph: ERROR: cannot link elements of types 'videotestbin' and 'rtmpbin'\n");
         free();
         return;
     }
 
-    if (!gst_element_link_pads(audiosrc, "audiotestbinsrc", rtmpbin, "audiosink")) {
+    if (!gst_element_link_pads(audiosrc, AudioTestBin::GHOST_PAD_NAME, rtmpbin, "audiosink")) {
         g_printerr("RtmpGraph: ERROR: cannot link elements of types 'audiotestbin' and 'rtmpbin'\n");
         free();
         return;

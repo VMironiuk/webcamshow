@@ -190,7 +190,7 @@ void RtmpPreviewVideoTestGraph::setup()
     }
 
     // Link audiosrc ! rtmpbin
-    if (!gst_element_link_pads(audiosrc, "audiotestbinsrc", rtmpbin, "audiosink")) {
+    if (!gst_element_link_pads(audiosrc, AudioTestBin::GHOST_PAD_NAME, rtmpbin, "audiosink")) {
         g_printerr("RtmpPreviewVideoTestGraph: ERROR: failed to link elements of types 'audiotestbin' and 'rtmpbin'\n");
         free();
         return;
