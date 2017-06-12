@@ -2,6 +2,11 @@
 
 #include <gst/gst.h>
 
+const char *AudioInputBin::BIN_NAME = "audioinputbin";
+const char *AudioInputBin::SRC_NAME = "alsasrc";
+const char *AudioInputBin::SRC_ALIAS = "audiosrc";
+const char *AudioInputBin::GHOST_PAD_NAME = "audioinputbinsrc";
+
 AudioInputBin::AudioInputBin()
     : AbstractBin()
 {
@@ -16,15 +21,15 @@ AudioInputBin::~AudioInputBin()
 GstElement *AudioInputBin::get()
 {
     // Create elements
-    GstElement *bin = gst_bin_new("audioinputbin");
+    GstElement *bin = gst_bin_new(BIN_NAME);
     if (!bin) {
         g_printerr("AudioInputBin: ERROR: failed to create element of type 'bin'\n");
         return NULL;
     }
 
-    GstElement *audiosrc = gst_element_factory_make("alsasrc", "audiosrc");
+    GstElement *audiosrc = gst_element_factory_make(SRC_NAME, SRC_ALIAS);
     if (!audiosrc) {
-        g_printerr("AudioInputBin: ERROR: failed to create element of type 'alsasrc'\n");
+        g_printerr("AudioInputBin: ERROR: failed to create element of type '%s'\n", SRC_NAME);
         gst_object_unref(GST_OBJECT(bin));
         return NULL;
     }
@@ -39,7 +44,7 @@ GstElement *AudioInputBin::get()
     GstPad *pad = gst_element_get_static_pad(audiosrc, "src");
     g_assert(pad);
 
-    GstPad *ghostpad = gst_ghost_pad_new("audioinputbinsrc", pad);
+    GstPad *ghostpad = gst_ghost_pad_new(GHOST_PAD_NAME, pad);
     if (!ghostpad) {
         g_printerr("AudioInputBin: ERROR: failed to create element of type 'ghostpad'\n");
         gst_object_unref(GST_OBJECT(pad));

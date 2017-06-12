@@ -189,7 +189,7 @@ void RtmpPreviewGraph::setup()
     }
 
     // Link audiosrc ! rtmpbin
-    if (!gst_element_link_pads(audiosrc, "audioinputbinsrc", rtmpbin, "audiosink")) {
+    if (!gst_element_link_pads(audiosrc, AudioInputBin::GHOST_PAD_NAME, rtmpbin, "audiosink")) {
         g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'audioinputbin' and 'rtmpbin'\n");
         free();
         return;
