@@ -153,7 +153,7 @@ void RtmpPreviewVideoTestGraph::setup()
     g_assert(tee_pad_src_0);
     m_requested_pads.push_back(tee_pad_src_0);
 
-    GstPad *preview_pad = gst_element_get_static_pad(previewbin, "videopreviewsink");
+    GstPad *preview_pad = gst_element_get_static_pad(previewbin, VideoPreviewBin::GHOST_PAD_NAME);
     g_assert(preview_pad);
 
     if (gst_pad_link(tee_pad_src_0, preview_pad) != GST_PAD_LINK_OK) {
