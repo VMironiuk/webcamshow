@@ -167,7 +167,7 @@ void RtmpPreviewGraph::setup()
     g_assert(tee_pad_src_1);
     m_requested_pads.push_back(tee_pad_src_1);
 
-    GstPad *rtmp_pad = gst_element_get_static_pad(rtmpbin, "videosink");
+    GstPad *rtmp_pad = gst_element_get_static_pad(rtmpbin, RtmpStreamingBin::VIDEO_GHOST_PAD_NAME);
     g_assert(rtmp_pad);
 
     if (gst_pad_link(tee_pad_src_1, rtmp_pad) != GST_PAD_LINK_OK) {
@@ -189,7 +189,7 @@ void RtmpPreviewGraph::setup()
     }
 
     // Link audiosrc ! rtmpbin
-    if (!gst_element_link_pads(audiosrc, AudioInputBin::GHOST_PAD_NAME, rtmpbin, "audiosink")) {
+    if (!gst_element_link_pads(audiosrc, AudioInputBin::GHOST_PAD_NAME, rtmpbin, RtmpStreamingBin::AUDIO_GHOST_PAD_NAME)) {
         g_printerr("RtmpPreviewGraph: ERROR: failed to link elements of types 'audioinputbin' and 'rtmpbin'\n");
         free();
         return;
